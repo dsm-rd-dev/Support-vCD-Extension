@@ -43,17 +43,14 @@
       </div>
   </clr-modal>
 
+  //TODO Ticket Modal
+
   <h1>{{"tos.title" | translate}}</h1>
   <div class="row">
-    <form clrForm [formGroup]="getTicketForm" (ngSubmit)="submitFetch()" class="support-form">
-      <div class="form-group">
-        <label for="id">Ticket ID:</label>
-        <input id="id" type="text" formControlName="ticketID" />
-      </div>
-    </form>
-    <button class="btn btn-primary" (click)="submitFetch()">Lookup Ticket</button>
     <button class="btn btn-primary" (click)="openCreateForm()">Create Ticket</button>
   </div>
+
+  //TODO convert to loop over data
   <div *ngIf="ticketData">
     <div *ngIf="ticketData.id">
       <div class="row">

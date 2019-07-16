@@ -44,6 +44,9 @@ export class SimpleComponent implements OnInit {
     ticketCreateData: object;
     ticketData: object;
 
+    companyData: object;
+    companyId: number;
+
     createForm = new FormGroup({
         summary: new FormControl('', Validators.required),
         org: new FormControl('', Validators.required),
@@ -61,9 +64,13 @@ export class SimpleComponent implements OnInit {
             this.create = false;
             console.log(this.createForm.value);
 
-            this.http.post("https://conheart.com/api/cw/ticket/", { "summary": this.createForm.get("org").value + "-" + this.createForm.get("user").value + ": " + this.createForm.get("summary").value, "companyName": this.createForm.get("org").value, "boardId": 6}, {
+            this.http.post("https://conheart.com/api/cw/ticket/", {
+                "summary": this.createForm.get("org").value + "-" + this.createForm.get("user").value + ": " + this.createForm.get("summary").value,
+                "companyName": this.createForm.get("org").value,
+                "boardId": 6
+            }, {
                 headers: new HttpHeaders({
-                    'Authorization': creds,
+                    'Authorization': creds.auth,
                     'Content-Type': 'application/json'
                 })
             }).subscribe(
@@ -95,23 +102,35 @@ export class SimpleComponent implements OnInit {
         this.create = false;
     }
 
-
-
-    submitFetch() {
-        this.ticketData = null;
-        this.http.get('https://conheart.com/api/cw/ticket/' + this.getTicketForm.get("ticketID").value, {
-            headers: new HttpHeaders({
-                'Authorization': creds,
-                'Accept': '*/*'
-            })
-        }).subscribe(
+    getTickets() {
+        this.tenant.subscribe(
             data => {
-                this.ticketData = data;
-            },
-            err => {
-                console.log(err);
+                this.http.get(creds.url + '/cw/company/' + data + '/lookup', {
+                    headers: new HttpHeaders({
+                        'Authorization': creds.auth
+                    })
+                }).subscribe(
+                    data => {
+                        this.http.get(creds.url + '/cw/company/' + data["id"] + '/tickets', {
+                            headers: new HttpHeaders({
+                                'Authorization': creds.auth
+                            })
+                        }).subscribe(
+                            data => {
+                                this.companyData = data;
+                            },
+                            err => {
+                                console.log(err);
+                            }
+                        );
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
             }
         );
+
     }
 
     ngOnInit(): void {
@@ -119,5 +138,6 @@ export class SimpleComponent implements OnInit {
         this.username = this.client.username;
         this.create = false;
         this.confirm = false;
+        this.getTickets();
     }
 }
