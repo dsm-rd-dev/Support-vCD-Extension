@@ -1,7 +1,116 @@
 <div>
-  <p><i>Logged into {{tenant | async}} as {{username | async}}</i></p>
+  <clr-modal [(clrModalOpen)]="create" [clrModalSize]="'lg'" [clrModalClosable]="false">
+    <h3 class="modal-title">Create Support Ticket</h3>
+    <div class='modal-body'>
+
+      <form clrForm [formGroup]="createForm" (ngSubmit)='submitCreate()' class="support-form">
+        <section class="form-block">
+          <label>Create Support Ticket</label>
+
+          <div class="form-group">
+            <label for="org" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md"
+              [class.invalid]="createForm.get('org').invalid">Company</label>
+            <input readonly id="org" type="text" formControlName="org">
+          </div>
+
+          <div class="form-group">
+            <label for="user" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md"
+              [class.invalid]="createForm.get('user').invalid">User</label>
+            <input readonly id="user" type="text" formControlName="user">
+          </div>
+
+          <div class="form-group">
+            <label for="summary" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md"
+              [class.invalid]="createForm.get('summary').invalid">Summary
+            </label>
+            <textarea rows="5" id="summary" formControlName="summary"></textarea>
+          </div>
+
+        </section>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="cancelCreateForm()">Cancel</button>
+      <button type="submit" class="btn btn-primary" (click)="submitCreate()">Submit</button>
+    </div>
+  </clr-modal>
+
+  <clr-modal *ngIf="ticketCreateData" [(clrModalOpen)]="confirm" [clrModalSize]="'sm'">
+      <h3 class="modal-title">New Ticket Created</h3>
+      <p class="modal-body">Ticket ID - {{ticketCreateData.id}} Created</p>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="confirm=false">OK</button>
+      </div>
+  </clr-modal>
+
   <h1>{{"tos.title" | translate}}</h1>
-  <p>{{"tos.1" | translate}}</p>
-  <p>{{"tos.2" | translate}}</p>
-  <img src="{{assetUrl}}/monkey.jpg" alt="Thoughtful Primate">
+  <div class="row">
+    <form clrForm [formGroup]="getTicketForm" (ngSubmit)="submitFetch()" class="support-form">
+      <div class="form-group">
+        <label for="id">Ticket ID:</label>
+        <input id="id" type="text" formControlName="ticketID" />
+      </div>
+    </form>
+    <button class="btn btn-primary" (click)="submitFetch()">Lookup Ticket</button>
+    <button class="btn btn-primary" (click)="openCreateForm()">Create Ticket</button>
+  </div>
+  <div *ngIf="ticketData">
+    <div *ngIf="ticketData.id">
+      <div class="row">
+        <p class="ticket-header">
+          <b>Ticket Summary</b>: <b>{{ ticketData.id }}</b>
+        </p>
+      </div>
+      <div class="row">
+        <table class="ticket-data" width="100%">
+          <tbody>
+            <tr>
+              <td align="left">
+                <b>Ticket Summary</b></td>
+              <td align="left">
+                {{ticketData.summary}}</td>
+            </tr>
+            <tr>
+              <td align="left">
+                <b>Organization</b></td>
+              <td align="left">
+                {{ticketData.company.name}}</td>
+            </tr>
+            <tr>
+              <td align="left">
+                <b>Status</b></td>
+              <td align="left">
+                {{ticketData.status.name}}</td>
+            </tr>
+            <tr>
+              <td align="left">
+                <b>Contact</b></td>
+              <td align="left">
+                {{ticketData.contactName}}</td>
+            </tr>
+            <tr>
+              <td align="left">
+                <b>Phone</b></td>
+              <td align="left">
+                {{ticketData.contactPhoneNumber}}</td>
+            </tr>
+            <tr>
+              <td align="left">
+                <b>Email</b></td>
+              <td align="left">
+                {{ticketData.contactEmailAddress}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="ticketData.code">
+      <h3 class="modal-title">Error</h3>
+      <div>
+        <p>
+          Ticket Not Found
+        </p>
+      </div>
+    </div>
+  </div>
 </div>

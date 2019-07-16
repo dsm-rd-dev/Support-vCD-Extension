@@ -9,3 +9,90 @@ img {
     margin-right: auto;
     width: 40%;
 }
+
+.support-form {
+    height: max-content;
+}
+
+.ticket-header {
+    font-color: white;
+    font-family: Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
+    color: white;
+    font-size: 22px;
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-top: 5px;
+    padding-right: 30px;
+    padding-bottom: 3px;
+    padding-left: 30px;
+    background-color: #4aa3d6;
+}
+
+.ticket-data {
+    font-family: Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
+    border-collapse: collapse;
+    padding-bottom: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-left: 4px;
+    margin-left: 12px;
+    text-align: left;
+    font-size: 12px;
+    width: 100%;
+}
+
+.ticket-data td:first-child {
+    font-family: Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
+    border-collapse: collapse;
+    padding-bottom: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-left: 4px;
+    margin-left: 12px;
+    text-align: left;
+    font-size: 12px;
+    width: 20%;
+}
+
+.ticket-data td:last-child {
+    font-family: Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
+    border-collapse: collapse;
+    padding-bottom: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-left: 4px;
+    margin-left: 12px;
+    text-align: left;
+    font-size: 12px;
+    width: 80%;
+}
+
+table,
+th,
+td,
+.tabledState {
+    font-family: Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
+    border-collapse: collapse;
+    padding: 4px;
+    margin-left: 12px;
+    text-align: left;
+    font-size: 12px;
+    width: 40%;
+}
+
+.colouredStatenormal {
+    font-weight: bold;
+    color: green;
+}
+
+.colouredStatefailed {
+    font-weight: bold;
+    color: red;
+}
+
+.colouredStatewarning {
+    font-weight: bold;
+    color: orange;
+}

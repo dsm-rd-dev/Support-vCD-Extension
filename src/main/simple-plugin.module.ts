@@ -8,6 +8,8 @@ import { PluginModule } from "@vcd/sdk/core";
 import { TranslateService } from "@vcd/sdk/i18n";
 import { ClarityModule } from "clarity-angular";
 import { SimpleComponent } from "./simple/simple.component";
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 const ROUTES: Routes = [
     { path: "", component: SimpleComponent }
@@ -17,7 +19,9 @@ const ROUTES: Routes = [
     imports: [
         ClarityModule,
         CommonModule,
+        HttpClientModule,
         VcdSdkModule,
+        ReactiveFormsModule,
         RouterModule.forChild(ROUTES)
     ],
     declarations: [

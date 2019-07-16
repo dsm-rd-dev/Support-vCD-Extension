@@ -1,14 +1,14 @@
 {
-    "urn": "vmware:vcloud:plugin:seed",
-    "name": "Simple plugin",
+    "urn": "vmware:vcloud:plugin:c8a61ad2-96d9-4e97-9f95-c0eb5e83650c",
+    "name": "Support Plugin",
     "containerVersion": "9.1.0",
     "version": "1.0.0",
     "scope": ["service-provider", "tenant"],
     "permissions": [],
-    "description": "An example plugin.",
-    "vendor": "VMware",
+    "description": "A plugin to integrate DSM ConnectWise for easy Ticket Management",
+    "vendor": "DSM",
     "license": "Copyright (C) VMware 2017-2018.  All rights reserved.",
     "link": "http://www.vmware.com/support",
     "module": "SimplePluginModule",
-    "route": "plugin"
+    "route": "support"
 }

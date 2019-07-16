@@ -4,3 +4,8 @@ dist/
 manage_plugin.ini
 manage_plugin.ini.template
 manage_plugin.py
+
+##Authentication Credential Files
+ui_ext_api.ini
+config.json
+creds.js
