@@ -157,6 +157,10 @@ export class SimpleComponent implements OnInit {
                 if(data["code"] == "EPARSE"){
                     this.error = true;
                     this.errorMessage = "Invalid Ticket ID";
+                }
+                else if(data["code"] == "NotFound"){
+                    this.error = true;
+                    this.errorMessage = "Ticket Not Found";
                 }else if(data["company"]["id"] == this.companyId){
                     this.inspect = true;
                     this.ticketData = data;
