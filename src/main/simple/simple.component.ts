@@ -66,8 +66,6 @@ export class SimpleComponent implements OnInit {
     submitCreate() {
         if (this.createForm.valid) {
             this.create = false;
-            console.log(this.createForm.value);
-
             this.http.post(creds.url + '/cw/ticket/', {
                 "summary": this.createForm.get("org").value + "-" + this.createForm.get("user").value + ": " + this.createForm.get("summary").value,
                 "companyName": this.createForm.get("org").value,
@@ -79,8 +77,6 @@ export class SimpleComponent implements OnInit {
                 })
             }).subscribe(
                 data => {
-                    console.log("Ticket Created");
-                    console.log(data);
                     this.ticketCreateData = data;
                     this.confirm = true;
                 }
@@ -109,7 +105,6 @@ export class SimpleComponent implements OnInit {
     openTicket(i:number){
         this.inspect = true;
         this.ticketData = this.companyData[i];
-        console.log(this.companyData[i]);
     }
 
     getTickets() {
@@ -153,7 +148,6 @@ export class SimpleComponent implements OnInit {
             })
         }).subscribe(
             data => {
-                console.log(data);
                 if(data["code"] == "EPARSE"){
                     this.error = true;
                     this.errorMessage = "Invalid Ticket ID";
@@ -166,7 +160,7 @@ export class SimpleComponent implements OnInit {
                     this.ticketData = data;
                 }else{
                     this.error = true;
-                    this.errorMessage = "Unauthorized to view that ticket";
+                    this.errorMessage = "Ticket Not Found";
                 }
             }
         )
