@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   <clr-modal [(clrModalOpen)]="create" [clrModalSize]="'lg'" [clrModalClosable]="false">
     <h3 class="modal-title">Create Support Ticket</h3>
     <div class='modal-body'>
@@ -35,79 +35,98 @@
     </div>
   </clr-modal>
 
-  <clr-modal *ngIf="ticketCreateData" [(clrModalOpen)]="confirm" [clrModalSize]="'sm'">
-      <h3 class="modal-title">New Ticket Created</h3>
-      <p class="modal-body">Ticket ID - {{ticketCreateData.id}} Created</p>
-      <div class="modal-footer">
-        <button class="btn btn-primary" (click)="confirm=false">OK</button>
-      </div>
+  <clr-modal *ngIf="ticketCreateData" [(clrModalOpen)]="confirm" [clrModalSize]="'sm'" [clrModalClosable]="false">
+    <h3 class="modal-title">New Ticket Created</h3>
+    <p class="modal-body">Ticket ID - {{ticketCreateData.id}} Created</p>
+    <div class="modal-footer">
+      <button class="btn btn-primary" (click)="getTickets()">OK</button>
+    </div>
   </clr-modal>
 
-  //TODO Ticket Modal
+  <clr-modal [(clrModalOpen)]="error" [clrModalSize]="'sm'">
+    <h3 class="modal-title">Error</h3>
+    <div class="modal-body">{{errorMessage}}</div>
+  </clr-modal>
+
+  <clr-modal *ngIf="ticketData" [(clrModalOpen)]="inspect">
+    <h3 class="modal-title">Ticket Summary</h3>
+    <div class="modal-body">
+      <table class="ticket-data" width="100%">
+        <tbody>
+          <tr>
+            <td align="left">
+              <b>Ticket Summary</b></td>
+            <td align="left">
+              {{ticketData.summary}}</td>
+          </tr>
+          <tr>
+            <td align="left">
+              <b>Organization</b></td>
+            <td align="left">
+              {{ticketData.company.name}}</td>
+          </tr>
+          <tr>
+            <td align="left">
+              <b>Status</b></td>
+            <td *ngIf="ticketData.closedFlag" align="left">
+              Closed
+            </td>
+            <td *ngIf="!ticketData.closedFlag" align="left">
+              {{ticketData.status.name}}
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <b>Contact</b></td>
+            <td align="left">
+              {{ticketData.contactName}}</td>
+          </tr>
+          <tr>
+            <td align="left">
+              <b>Phone</b></td>
+            <td align="left">
+              {{ticketData.contactPhoneNumber}}</td>
+          </tr>
+          <tr>
+            <td align="left">
+              <b>Email</b></td>
+            <td align="left">
+              {{ticketData.contactEmailAddress}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </clr-modal>
 
   <h1>{{"tos.title" | translate}}</h1>
   <div class="row">
-    <button class="btn btn-primary" (click)="openCreateForm()">Create Ticket</button>
+    <button class="btn btn-primary" (click)="openCreateForm()">Open Ticket</button>
   </div>
-
-  //TODO convert to loop over data
-  <div *ngIf="ticketData">
-    <div *ngIf="ticketData.id">
-      <div class="row">
-        <p class="ticket-header">
-          <b>Ticket Summary</b>: <b>{{ ticketData.id }}</b>
-        </p>
+  <div class="row">
+    <form clrForm [formGroup]="getTicketForm" (ngSubmit)="fetchTicket()" class="support-form">
+      <div class="formGroup">
+        <label for="id">Ticket ID</label>
+        <input type="text" name="id" formControlName="ticketID">
       </div>
-      <div class="row">
-        <table class="ticket-data" width="100%">
-          <tbody>
-            <tr>
-              <td align="left">
-                <b>Ticket Summary</b></td>
-              <td align="left">
-                {{ticketData.summary}}</td>
-            </tr>
-            <tr>
-              <td align="left">
-                <b>Organization</b></td>
-              <td align="left">
-                {{ticketData.company.name}}</td>
-            </tr>
-            <tr>
-              <td align="left">
-                <b>Status</b></td>
-              <td align="left">
-                {{ticketData.status.name}}</td>
-            </tr>
-            <tr>
-              <td align="left">
-                <b>Contact</b></td>
-              <td align="left">
-                {{ticketData.contactName}}</td>
-            </tr>
-            <tr>
-              <td align="left">
-                <b>Phone</b></td>
-              <td align="left">
-                {{ticketData.contactPhoneNumber}}</td>
-            </tr>
-            <tr>
-              <td align="left">
-                <b>Email</b></td>
-              <td align="left">
-                {{ticketData.contactEmailAddress}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div *ngIf="ticketData.code">
-      <h3 class="modal-title">Error</h3>
-      <div>
-        <p>
-          Ticket Not Found
-        </p>
-      </div>
-    </div>
+    </form>
+    <button class="btn btn-primary" (click)="fetchTicket()">Search Ticket</button>
+  </div>
+  <div class="row">
+    <table class="ticket-list ticket-data">
+        <tr class="ticket-header">
+          <th>Ticket ID</th>
+          <th>Ticket Summary</th>
+        </tr>
+        <ng-template ngFor let-ticket [ngForOf]="companyData" let-i="index">
+          <tr (click)="openTicket(i)">
+            <td>
+              {{ticket.id}}
+            </td>
+            <td>
+              {{ticket.summary}}
+            </td>
+          </tr>
+        </ng-template>
+    </table>
   </div>
 </div>

@@ -19,7 +19,6 @@ img {
     font-family: Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
     color: white;
     font-size: 22px;
-    width: 100%;
     margin-left: 10px;
     margin-right: 4px;
     vertical-align: middle;
@@ -37,13 +36,17 @@ img {
     padding-right: 4px;
     padding-top: 4px;
     padding-left: 4px;
-    margin-left: 12px;
+    margin-left: 0px;
     text-align: left;
     font-size: 12px;
     width: 100%;
 }
 
-.ticket-data td:first-child {
+.ticket-list tr:not(:first-child):hover {
+    background-color: #949ba6;
+}
+
+.ticket-list td:first-child {
     font-family: Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
     border-collapse: collapse;
     padding-bottom: 4px;
@@ -54,6 +57,14 @@ img {
     text-align: left;
     font-size: 12px;
     width: 20%;
+}
+
+.ticket-data th:first-child{
+    width: 20%;
+}
+
+.ticket-data th:last-child{
+    width: 80%;
 }
 
 .ticket-data td:last-child {
@@ -95,4 +106,10 @@ td,
 .colouredStatewarning {
     font-weight: bold;
     color: orange;
+}
+
+.container {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
 }
