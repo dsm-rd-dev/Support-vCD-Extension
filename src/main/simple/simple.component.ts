@@ -111,6 +111,7 @@ export class SimpleComponent implements OnInit {
 
     getTickets() {
         this.confirm = false;
+        this.inspect = false;
         this.tenant.subscribe(
             data => {
                 this.http.get(creds.url + '/api/cw/company/' + data + '/lookup', {
@@ -168,7 +169,6 @@ export class SimpleComponent implements OnInit {
         )
     }
 
-    //TODO Login to API Function
     getAPIToken() {
         this.http.post(creds.url + '/auth/login', {
             "username": creds.user,
@@ -183,6 +183,25 @@ export class SimpleComponent implements OnInit {
                     this.api_token = data["auth"];
                     this.getTickets();
                 }
+            },
+            err => {
+                console.log(err);
+            }
+        )
+    }
+
+    closeTicket(id:Number) {
+        this.http.patch(creds.url + '/api/cw/ticket', {
+            "id": id,
+            "status": "Closed"
+        }, {
+            headers: new HttpHeaders({
+                'Authorization': this.api_token,
+                'Content-Type': 'application/json'
+            })
+        }).subscribe(
+            data => {
+                this.getTickets();
             },
             err => {
                 console.log(err);
