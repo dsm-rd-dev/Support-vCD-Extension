@@ -10,9 +10,6 @@ import {
     EXTENSION_ASSET_URL
 } from '@vcd/sdk/common';
 import {
-    Query
-} from "@vcd/sdk/query";
-import {
     Observable
 } from "rxjs";
 import {
@@ -51,7 +48,9 @@ export class SimpleComponent implements OnInit {
     companyData: object;
     companyId: number;
 
-    api_token: string;
+    auth: boolean = true;
+
+    api_token: string = creds.key;
 
     createForm = new FormGroup({
         summary: new FormControl('', Validators.required),
@@ -127,15 +126,21 @@ export class SimpleComponent implements OnInit {
                             })
                         }).subscribe(
                             data => {
-                                this.companyData = data;
+                                this.companyData = data['list'];
                             },
                             err => {
                                 console.log(err);
+                                if(err.status == 401){
+                                    this.auth = false;
+                                }
                             }
                         );
                     },
                     err => {
                         console.log(err);
+                        if(err.status == 401){
+                            this.auth = false;
+                        }
                     }
                 );
             }
@@ -165,30 +170,36 @@ export class SimpleComponent implements OnInit {
                     this.error = true;
                     this.errorMessage = "Ticket Not Found";
                 }
+            },
+            err => {
+                console.log(err);
+                if(err.status == 401){
+                    this.auth = false;
+                }
             }
         )
     }
 
-    getAPIToken() {
-        this.http.post(creds.url + '/auth/login', {
-            "username": creds.user,
-            "password": creds.pass
-        }, {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        }).subscribe(
-            data => {
-                if(data["auth"]){
-                    this.api_token = data["auth"];
-                    this.getTickets();
-                }
-            },
-            err => {
-                console.log(err);
-            }
-        )
-    }
+    // getAPIToken() {
+    //     this.http.post(creds.url + '/auth/login', {
+    //         "username": creds.user,
+    //         "password": creds.pass
+    //     }, {
+    //         headers: new HttpHeaders({
+    //             'Content-Type': 'application/json'
+    //         })
+    //     }).subscribe(
+    //         data => {
+    //             if(data["auth"]){
+    //                 this.api_token = data["auth"];
+    //                 this.getTickets();
+    //             }
+    //         },
+    //         err => {
+    //             console.log(err);
+    //         }
+    //     )
+    // }
 
     closeTicket(id:Number) {
         this.http.patch(creds.url + '/api/cw/ticket', {
@@ -205,6 +216,9 @@ export class SimpleComponent implements OnInit {
             },
             err => {
                 console.log(err);
+                if(err.status == 401){
+                    this.auth = false;
+                }
             }
         )
     }
@@ -215,6 +229,6 @@ export class SimpleComponent implements OnInit {
         this.create = false;
         this.confirm = false;
         this.inspect = false;
-        this.getAPIToken();
+        this.getTickets();
     }
 }

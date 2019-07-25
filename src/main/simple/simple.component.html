@@ -100,7 +100,7 @@
       <button class="btn btn-warning" (click)="closeTicket(ticketData.id)">Close Ticket</button>
     </div>
   </clr-modal>
-
+<div *ngIf="auth">
   <h1>{{"tos.title" | translate}}</h1>
   <div class="row">
     <button class="btn btn-primary" (click)="openCreateForm()">Open Ticket</button>
@@ -132,4 +132,9 @@
         </ng-template>
     </table>
   </div>
+</div>
+
+<div *ngIf="!auth">
+  <h1>Sorry, this page is under construction!</h1>
+</div>
 </div>
