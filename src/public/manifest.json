@@ -3,7 +3,7 @@
     "name": "Support Plugin",
     "containerVersion": "9.1.0",
     "version": "1.0.0",
-    "scope": ["service-provider"],
+    "scope": ["service-provider", "tenant"],
     "permissions": [],
     "description": "A plugin to integrate DSM ConnectWise for easy Ticket Management",
     "vendor": "DSM",
