@@ -156,14 +156,7 @@ export class SimpleComponent implements OnInit {
             })
         }).subscribe(
             data => {
-                if(data["code"] == "EPARSE"){
-                    this.error = true;
-                    this.errorMessage = "Invalid Ticket ID";
-                }
-                else if(data["code"] == "NotFound"){
-                    this.error = true;
-                    this.errorMessage = "Ticket Not Found";
-                }else if(data["company"]["id"] == this.companyId){
+                if(data["company"]["id"] == this.companyId){
                     this.inspect = true;
                     this.ticketData = data;
                 }else{
@@ -175,35 +168,19 @@ export class SimpleComponent implements OnInit {
                 console.log(err);
                 if(err.status == 401){
                     this.auth = false;
+                }else if(err.status == 404){
+                    this.error = true;
+                    this.errorMessage = "Ticket Not Found";
+                }else if(err.status == 500){
+                    this.error = true;
+                    this.errorMessage = "Error parsing ticket ID"; 
                 }
             }
         )
     }
 
-    // getAPIToken() {
-    //     this.http.post(creds.url + '/auth/login', {
-    //         "username": creds.user,
-    //         "password": creds.pass
-    //     }, {
-    //         headers: new HttpHeaders({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     }).subscribe(
-    //         data => {
-    //             if(data["auth"]){
-    //                 this.api_token = data["auth"];
-    //                 this.getTickets();
-    //             }
-    //         },
-    //         err => {
-    //             console.log(err);
-    //         }
-    //     )
-    // }
-
     closeTicket(id:Number) {
-        this.http.patch(creds.url + '/api/cw/ticket', {
-            "id": id,
+        this.http.patch(creds.url + '/api/cw/ticket/' + id, {
             "status": "Closed"
         }, {
             headers: new HttpHeaders({

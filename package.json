@@ -6,7 +6,8 @@
     "clean": "rimraf dist",
     "lint-fix": "tslint --fix \"src/**/*.ts\" || exit 0",
     "build": "webpack",
-    "deploy": "node ./manage_plugin.js deploy"
+    "deploy": "node ./manage_plugin.js deploy",
+    "test": "node ./manage_plugin.js test"
   },
   "license": "BSD-3-Clause",
   "dependencies": {

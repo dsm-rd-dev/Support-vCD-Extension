@@ -66,7 +66,54 @@ async function deploy() {
     });
 
     //Upload Plugin
-    uploadPlugin(url);
+    await uploadPlugin(url);
+
+    //Publish to Test Orgs
+    publishToAllOrgs(id);
+}
+
+async function test(){
+    console.log(chalk.yellow("Deploying Plugin to Production"));
+    //Read Manifest
+    var plugin_config = JSON.parse(fs.readFileSync("./dist/manifest.json"));
+
+    //Get Plugins
+    var plugins = await getPlugins();
+
+    //Search for plugin with same name
+    for(var i = 0; i<plugins.length; i++) {
+        var plugin = plugins[i];
+        if(plugin.pluginName == plugin_config.name){
+            //Delete if found
+            await deletePlugin(plugin.id);
+            break;
+        }
+    }
+
+    //Register Plugin
+    var id = await registerPlugin({
+        "pluginName": plugin_config.name,
+        "vendor": plugin_config.vendor,
+        "description": plugin_config.description,
+        "version": plugin_config.version,
+        "license": plugin_config.license,
+        "link": plugin_config.link,
+        "provider_scoped": plugin_config.scope.includes("service-provider"),
+        "tenant_scoped": plugin_config.scope.includes("tenant"),
+        "enabled": true
+    });
+
+    //Enable Plugin Upload
+    url = "";
+    (await enablePluginUpload(id)).match(/<(.*?)>/g).map(val => {
+        url = val.replace(/<|>|/g, '');
+    });
+
+    //Upload Plugin
+    await uploadPlugin(url);
+
+    //Publish to Test Orgs
+    publishToTestOrgs(id);
 }
 
 function registerPlugin(plugin_config) {
@@ -157,6 +204,52 @@ function getPlugins() {
     });
 }
 
+function publishToTestOrgs(id) {
+    return new Promise((resolve, reject) => {
+        console.log("Publishing to Tenants");
+        axios.post(`${config.base_url}/cloudapi/extensions/ui/${id}/tenants/publish`,[
+            {
+                "name":"System",
+                "id": "urn:vcloud:org:a93c9db9-7471-3192-8d09-a8f7eeda85f9"
+            },
+            {
+                "name": "npi",
+                "id": "urn:vcloud:org:6d45edd1-5de8-4c8f-a06b-f8b05dca5156"
+            },
+            {
+                "name": "gcm",
+                "id": "urn:vcloud:org:bf17c7a1-b20d-479f-9dcf-5b05de22ab2a"
+            }
+        ], {
+            headers: {
+                'x-vcloud-authorization': config.token
+            },
+            httpsAgent: agent
+        }).then(resp => {
+            resolve(resp);
+        }).catch(err => {
+            console.log(err);
+            reject(err);
+        })
+    });
+}
+
+function publishToAllOrgs(id) {
+    return new Promise((resolve, reject) => {
+        console.log("Publishing to Tenants");
+        axios.post(`${config.base_url}/cloudapi/extensions/ui/${id}/tenants/publishAll`, {
+            headers: {
+                'x-vcloud-authorization': config.token
+            },
+            httpsAgent: agent
+        }).then(resp => {
+            resolve(resp);
+        }).catch(err => {
+            console.log(err);
+            reject(err);
+        })
+    })
+}
 
 function readini() {
     var obj = JSON.parse(fs.readFileSync('./config.json'));

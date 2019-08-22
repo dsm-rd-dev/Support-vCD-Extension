@@ -98,24 +98,28 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-warning" (click)="closeTicket(ticketData.id)">Close Ticket</button>
+      <button class="btn btn-primary" (click)="inspect=false">Exit</button>
     </div>
   </clr-modal>
-<div *ngIf="auth">
-  <h1>{{"tos.title" | translate}}</h1>
-  <div class="row">
-    <button class="btn btn-primary" (click)="openCreateForm()">Open Ticket</button>
-  </div>
-  <div class="row">
-    <form clrForm [formGroup]="getTicketForm" (ngSubmit)="fetchTicket()" class="support-form">
-      <div class="formGroup">
-        <label for="id">Ticket ID</label>
-        <input type="text" name="id" formControlName="ticketID">
+  <div *ngIf="auth">
+      <h1>{{"tos.title" | translate}}</h1>
+        <h6 style="margin-top: 0.1rem">Toll Free Support: (877) 376-6381</h6>
+        <h6 style="margin-top: 0.1rem">Email Support: <a href="mailto:helpdesk@dsm.net?subject=Support Question From VCD">helpdesk@dsm.net</a></h6>
+        <h6 style="margin-top: 0.1rem; margin-bottom: 0.5rem"><a target="_blank" href="https://miruma.helpdocs.io">Knowlege Base</a></h6>
+      <div class="row">
+        <button class="btn btn-primary" (click)="openCreateForm()">Open Ticket</button>
       </div>
-    </form>
-    <button class="btn btn-primary" (click)="fetchTicket()">Search Ticket</button>
-  </div>
-  <div class="row">
-    <table class="ticket-list ticket-data">
+      <div class="row">
+        <form clrForm [formGroup]="getTicketForm" (ngSubmit)="fetchTicket()" class="support-form">
+          <div class="formGroup">
+            <label for="id">Ticket ID</label>
+            <input type="text" name="id" formControlName="ticketID">
+          </div>
+        </form>
+        <button class="btn btn-primary" (click)="fetchTicket()">Search Ticket</button>
+      </div>
+    <div class="row">
+      <table class="ticket-list ticket-data">
         <tr class="ticket-header">
           <th>Ticket ID</th>
           <th>Ticket Summary</th>
@@ -130,11 +134,11 @@
             </td>
           </tr>
         </ng-template>
-    </table>
+      </table>
+    </div>
   </div>
-</div>
 
-<div *ngIf="!auth">
-  <h1>Sorry, this page is under construction!</h1>
-</div>
+  <div *ngIf="!auth">
+    <h1>Sorry, this page is under construction!</h1>
+  </div>
 </div>
